@@ -78,12 +78,13 @@ public class JsonBlocks extends GhidraScript {
     }
     public class CkFunction {
         public long start_addr;
+        public String name;
         public Vector<CkBasicBlock> blocks;
         public CkFunction() {
             blocks = new Vector<CkBasicBlock>(0);
         };
         public void dumpJson(PrintStream o) {
-            o.printf("{\"address\":%d,\"blocks\":[", start_addr);
+            o.printf("{\"address\":%d,\"name\":\"%s\",\"blocks\":[", start_addr, name);
             boolean first = true;
             for(CkBasicBlock ckbb : blocks) {
                 if(!first) {
@@ -124,6 +125,7 @@ public class JsonBlocks extends GhidraScript {
             int j = 0;
             CkFunction ck_fn = new CkFunction();
             ck_fn.start_addr = fn.getEntryPoint().getOffset();
+            ck_fn.name = fn.getName();
             AddressSetView asv = fn.getBody();
             AddressRangeIterator ari = asv.getAddressRanges();
             for(AddressRange ar : ari) {
